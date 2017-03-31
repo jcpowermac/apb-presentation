@@ -72,7 +72,7 @@ registries: {}
 
 === !
 
-.entrypoint.js
+.ansible/templates/entrypoint.js
 [source,bash]
 ----
 #!/bin/sh
@@ -97,7 +97,20 @@ ansible-container shipit openshift
 == AnsibleApp
 
 === !
-.Gotcha!
+Gotcha - No Project!
+
+.ansible/roles/foo-ansibleapp-openshift/tasks/main.yml
+[source,yaml]
+----
+- name: create foo-ansibleapp project
+  command: oc new-project foo-ansibleapp
+  ignore_errors: True
+----
+
+=== !
+Gotcha - Wrong Tag!
+
+.ansible/roles/foo-ansibleapp-openshift/tasks/main.yml
 [source,yaml]
 ----
 containers:
@@ -114,6 +127,7 @@ containers:
     - /usr/bin/entrypoint
 ----
 <1> The tag must be modified
+
 
 
 === !
