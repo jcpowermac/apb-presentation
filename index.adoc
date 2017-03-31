@@ -1,0 +1,143 @@
+= Ansible Playbook Bundle Review
+Joseph Callen
+:source-highlighter: coderay 
+:revealjs_theme: black 
+:revealjs_margin: 0.04
+
+== Install 
+
+=== !
+[source,bash]
+----
+dnf install python2-virtualenv git -y
+virtualenv venv
+source venv/bin/activate
+pip install -U pip setuptools
+git clone https://github.com/fusor/ansibleapp
+cd ansibleapp/src
+pip install -r requirements.txt
+pip install ansible-container
+----
+
+== ansible-container 
+
+=== !
+
+.init
+[source,bash]
+----
+mkdir foo-ansibleapp
+cd foo-ansibleapp
+ansible-container init
+mkdir ansible/templates
+----
+
+=== ! 
+
+.ansible/container.yml
+[source,yaml]
+----
+---
+version: "2"
+services:
+    foo:
+        image: centos
+        command: ['tail', '-f', '/dev/null']
+        entrypoint: ["/usr/bin/entrypoint"]
+        environment:
+            - "MESSAGE={{ '{{ message }}' }}"
+registries: {}
+----
+
+=== !
+
+.ansible/main.yml
+[source,yaml]
+----
+- hosts: foo
+  gather_facts: false
+  tasks:
+    - name: Install Packages
+      yum:
+        name: "{{ item }}"
+      with_items:
+        - vim
+        - wget
+    - template:
+        src: "templates/entrypoint.j2"
+        dest: "/usr/bin/entrypoint"
+        group: "root"
+        mode: "ug+x"
+----
+
+=== !
+
+.entrypoint.js
+[source,bash]
+----
+#!/bin/sh
+USER_ID=$(id -u)
+
+echo "${MESSAGE}"
+
+exec "$@"
+----
+
+=== !
+
+.Build, Push and OpenShift
+[source,bash]
+----
+ansible-container build
+ansible-container push --tag latest
+ansible-container shipit openshift
+----
+
+
+== AnsibleApp
+
+=== !
+.Gotcha!
+[source,yaml]
+----
+containers:
+- securityContext: {}
+  name: foo
+  env:
+    MESSAGE: '{{ message }}'
+  args:
+    - tail
+    - -f
+    - /dev/null
+  image: jcpowermac/foo-ansibleapp-foo:latest <1>
+  command:
+    - /usr/bin/entrypoint
+----
+<1> The tag must be modified
+
+
+=== !
+
+.ansibleapp.yml 
+[source,yaml]
+----
+name: jcpowermac/foo-ansibleapp
+description: Foo AnsibleApp
+bindable: false
+async: optional
+parameters:
+  - name: message
+    description: say something in container
+    type: string
+    default: hello world
+----
+
+=== !
+.Prepare, Build and Push
+[source,bash]
+----
+ansibleapp prepare
+docker build -t jcpowermac/foo-ansibleapp .
+docker tag jcpowermac/foo-ansibleapp:latest docker.io/jcpowermac/foo-ansibleapp:latest
+docker push docker.io/jcpowermac/foo-ansibleapp:latest
+----
