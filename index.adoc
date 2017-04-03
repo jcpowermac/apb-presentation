@@ -1,6 +1,7 @@
-= Ansible Playbook Bundle Review
+= APB Overview 
 Joseph Callen
-:source-highlighter: coderay 
+:source-highlighter: pygments
+:pygments-style: vim 
 :revealjs_theme: black 
 :revealjs_margin: 0.04
 
@@ -152,6 +153,7 @@ parameters:
 ----
 ansibleapp prepare
 docker build -t jcpowermac/foo-ansibleapp .
-docker tag jcpowermac/foo-ansibleapp:latest docker.io/jcpowermac/foo-ansibleapp:latest
+docker tag jcpowermac/foo-ansibleapp:latest docker.io/\
+           jcpowermac/foo-ansibleapp:latest
 docker push docker.io/jcpowermac/foo-ansibleapp:latest
 ----
