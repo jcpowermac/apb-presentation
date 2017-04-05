@@ -144,9 +144,18 @@ ansible-container shipit openshift</code></pre></div></div></section></section>
     <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">string</span>
     <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">default</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">hello world</span></code></pre></div></div></section><section><div class="listingblock"><div class="title">Prepare, Build and Push</div><div class="content"><pre class="pygments highlight"><code class="bash language-bash">ansibleapp prepare
 docker build -t jcpowermac/foo-ansibleapp .
-docker tag jcpowermac/foo-ansibleapp:latest docker.io/<span class="tok-se">\</span>
-           jcpowermac/foo-ansibleapp:latest
-docker push docker.io/jcpowermac/foo-ansibleapp:latest</code></pre></div></div></section></section></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/lib/js/head.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+
+docker tag jcpowermac/foo-ansibleapp:latest <span class="tok-se">\</span>
+docker.io/jcpowermac/foo-ansibleapp:latest
+
+docker push docker.io/jcpowermac/foo-ansibleapp:latest</code></pre></div></div></section></section>
+<section><section id="_ansible_service_broker"><h2>Ansible Service Broker</h2></section><section><div class="paragraph"><p>Gotcha - Hacked version!</p></div>
+<div class="listingblock"><div class="content"><pre class="pygments highlight"><code class="bash language-bash">oc login --username<span class="tok-o">=</span>admin --password<span class="tok-o">=</span> --insecure-skip-tls-verify<span class="tok-o">=</span><span class="tok-nb">true</span> openshift.virtomation.com:8443
+oc project ansible-service-broker
+
+./asbcli up --cluster-user admin --cluster-pass --dockerhub-user jcpowermac --dockerhub-pass <span class="tok-s1">&#39;&#39;</span> openshift.virtomation.com:8443 --org jcpowermac
+
+./asbcli connect asb-1338-ansible-service-broker.router.default.svc.cluster.local</code></pre></div></div></section></section></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/lib/js/head.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
 Reveal.initialize({
   // Display controls in the bottom right corner
   controls: true,

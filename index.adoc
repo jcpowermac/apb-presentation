@@ -155,7 +155,26 @@ parameters:
 ----
 ansibleapp prepare
 docker build -t jcpowermac/foo-ansibleapp .
-docker tag jcpowermac/foo-ansibleapp:latest docker.io/\
-           jcpowermac/foo-ansibleapp:latest
+
+docker tag jcpowermac/foo-ansibleapp:latest \
+docker.io/jcpowermac/foo-ansibleapp:latest
+
 docker push docker.io/jcpowermac/foo-ansibleapp:latest
+----
+
+
+== Ansible Service Broker
+
+=== !
+
+Gotcha - Hacked version!
+
+[source,bash]
+----
+oc login --username=admin --password= --insecure-skip-tls-verify=true openshift.virtomation.com:8443
+oc project ansible-service-broker
+
+./asbcli up --cluster-user admin --cluster-pass --dockerhub-user jcpowermac --dockerhub-pass '' openshift.virtomation.com:8443 --org jcpowermac
+
+./asbcli connect asb-1338-ansible-service-broker.router.default.svc.cluster.local
 ----
