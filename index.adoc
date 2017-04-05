@@ -17,6 +17,8 @@ pip install -U pip setuptools
 git clone https://github.com/fusor/ansibleapp
 cd ansibleapp/src
 pip install -r requirements.txt
+cd ..
+python setup.py install
 pip install ansible-container
 ----
 
@@ -73,7 +75,7 @@ registries: {}
 
 === !
 
-.ansible/templates/entrypoint.js
+.ansible/templates/entrypoint.j2
 [source,bash]
 ----
 #!/bin/sh

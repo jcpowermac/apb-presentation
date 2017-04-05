@@ -82,6 +82,8 @@ pip install -U pip setuptools
 git clone https://github.com/fusor/ansibleapp
 <span class="tok-nb">cd</span> ansibleapp/src
 pip install -r requirements.txt
+<span class="tok-nb">cd</span> ..
+python setup.py install
 pip install ansible-container</code></pre></div></div></section></section>
 <section><section id="_ansible_container"><h2>ansible-container</h2></section><section><div class="listingblock"><div class="title">init</div><div class="content"><pre class="pygments highlight"><code class="bash language-bash">mkdir foo-ansibleapp
 <span class="tok-nb">cd</span> foo-ansibleapp
@@ -108,7 +110,7 @@ mkdir ansible/templates</code></pre></div></div></section><section><div class="l
         <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">src</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-s">&quot;templates/entrypoint.j2&quot;</span>
         <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">dest</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-s">&quot;/usr/bin/entrypoint&quot;</span>
         <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">group</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-s">&quot;root&quot;</span>
-        <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">mode</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-s">&quot;ug+x&quot;</span></code></pre></div></div></section><section><div class="listingblock"><div class="title">ansible/templates/entrypoint.js</div><div class="content"><pre class="pygments highlight"><code class="bash language-bash"><span class="tok-ch">#!/bin/sh</span>
+        <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">mode</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-s">&quot;ug+x&quot;</span></code></pre></div></div></section><section><div class="listingblock"><div class="title">ansible/templates/entrypoint.j2</div><div class="content"><pre class="pygments highlight"><code class="bash language-bash"><span class="tok-ch">#!/bin/sh</span>
 <span class="tok-nv">USER_ID</span><span class="tok-o">=</span><span class="tok-k">$(</span>id -u<span class="tok-k">)</span>
 
 <span class="tok-nb">echo</span> <span class="tok-s2">&quot;</span><span class="tok-si">${</span><span class="tok-nv">MESSAGE</span><span class="tok-si">}</span><span class="tok-s2">&quot;</span>
